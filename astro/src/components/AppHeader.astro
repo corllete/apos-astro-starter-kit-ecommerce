@@ -1,0 +1,132 @@
+---
+import Button from "./Button.astro";
+import Logo from "./Logo.astro";
+import MainNavigation from "./MainNavigation.astro";
+import ButtonIcon from "./ButtonIcon.astro";
+import AppContainer from "@layouts/AppContainer.astro";
+import { navItems } from "@utils/theme.js";
+import apos from "@utils/apos.js";
+
+const { __t } = apos;
+const { config, currentUrl, homeUrl } = Astro.props;
+
+let headerCtaIcon = navItems([config.headerCtaIcon])[0];
+let headerCtaIconUrl = headerCtaIcon?.url;
+let headerCtaButton = navItems([config.headerCtaButton])[0];
+let headerCtaButtonUrl = headerCtaButton.url;
+let searchUrl = navItems([config.searchUrl])[0]?.url;
+let mainNav = navItems(config.headerNav, currentUrl);
+let logoAttachment = apos.image.first(config.logo || {});
+---
+
+<AppContainer>
+  <header
+    class="relative lg:overflow-hidden flex h-16 md:h-[100px] items-center justify-between border-b border-gray"
+  >
+    <a class="block max-w-[140px] md:max-w-[180px]" href={homeUrl}>
+      <Logo
+        attachment={logoAttachment}
+        alt={__t("brandHome", { value: config.brandName })}
+      />
+    </a>
+
+    <!-- render main nav 'hidden lg:block lg:mx-4' -->
+    <MainNavigation
+      id="main-menu-desktop"
+      items={mainNav}
+      className="hidden lg:block lg:mx-4"
+      aposData={Astro.props.aposData}
+    />
+
+    <div class="flex gap-1 md:gap-7">
+      {
+        searchUrl && (
+          <ButtonIcon
+            icon="magnifying-glass"
+            className="text-gray-600"
+            href={searchUrl}
+            label={__t("search")}
+          />
+        )
+      }
+      {
+        headerCtaIconUrl && (
+          <ButtonIcon
+            icon={headerCtaIcon.icon}
+            className="text-gray-600"
+            label={headerCtaIcon.label}
+            href={headerCtaIconUrl}
+          />
+        )
+      }
+      {
+        headerCtaButtonUrl && (
+          <Button
+            href={headerCtaButtonUrl}
+            className="hidden lg:inline-block ml-2"
+          >
+            {headerCtaButton.label}
+          </Button>
+        )
+      }
+      {
+        (
+          <ButtonIcon
+            id="main-menu-mobile-trigger"
+            icon="bars-3"
+            className="lg:hidden text-gray-600"
+            data-target="#main-menu-mobile-popup"
+            aria-label={__t("app:mainMenu")}
+            aria-expanded="false"
+            aria-controls="main-menu-mobile"
+          />
+        )
+      }
+    </div>
+
+    <div
+      id="main-menu-mobile-popup"
+      class="lg:hidden mt-2 px-8 py-4 max-w-full absolute top-full right-0 z-10 translate-y-4 opacity-0 pointer-events-none transition-[transform,opacity] ease-in motion-reduce:transition-none rounded-md bg-gray-100"
+    >
+      <MainNavigation
+        id="main-menu-mobile"
+        items={mainNav}
+        hidden={true}
+        aposData={Astro.props.aposData}
+      />
+      {
+        headerCtaButtonUrl && (
+          <div class="flex items-center justify-center pt-8 pb-4 mt-4 border-t border-brand">
+            <Button href={headerCtaButtonUrl}>{headerCtaButton.label}</Button>
+          </div>
+        )
+      }
+    </div>
+  </header>
+</AppContainer>
+<script>
+  function handleMobileMenuToggle() {
+    const popup = document.querySelector(this.dataset.target);
+    const nav = document.querySelector(
+      `#${this.getAttribute("aria-controls")}`
+    );
+    const active = this.getAttribute("aria-expanded") === "true";
+    if (!popup || !nav) {
+      return;
+    }
+    if (!active) {
+      this.setAttribute("aria-expanded", "true");
+      nav.setAttribute("aria-hidden", "false");
+      popup.classList.remove("pointer-events-none");
+      popup.style = "transform: translate(0, 0); opacity: 1;";
+      return;
+    }
+    this.setAttribute("aria-expanded", "false");
+    nav.setAttribute("aria-hidden", "true");
+    popup.style = "";
+    popup.classList.add("pointer-events-none");
+  }
+  document
+    .getElementById("main-menu-mobile-trigger")
+    .addEventListener("click", handleMobileMenuToggle);
+</script>

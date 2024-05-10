@@ -1,0 +1,63 @@
+---
+import SvgIcon from "./SvgIcon.astro";
+import apos from "@utils/apos";
+
+interface Props {
+  item: {
+    title: string;
+    subtitle?: string;
+    image: any;
+    _image: any;
+  };
+}
+
+const { item } = Astro.props;
+const attachment = apos.image.first(item.image || item._image || {});
+---
+
+<div
+  class="relative isolate md:flex md:items-center md:gap-16 p-8 lg:p-16 border rounded-md border-brand-300 bg-brand-50"
+>
+  {
+    attachment && (
+      <div class="mx-auto w-52 h-52 xs:w-80 xs:h-80">
+        <img
+          src={apos.attachment.url(attachment, { size: "full" })}
+          alt={attachment._alt}
+          width={apos.attachment.getWidth(attachment)}
+          height={apos.attachment.getHeight(attachment)}
+          srcset={attachment.srcset ?? apos.image.srcset(attachment)}
+          style={
+            apos.attachment.hasFocalPoint(attachment)
+              ? `object-position: ${apos.attachment.focalPointToObjectPosition(attachment)};`
+              : undefined
+          }
+          sizes="400px"
+          class="w-full h-full rounded-full object-cover"
+        />
+      </div>
+    )
+  }
+  <div class="flex-1 mt-6 md:mt-0">
+    <div class="prose prose-p:text-base md:prose-p:text-lg max-w-3xl">
+      <slot />
+    </div>
+    <div class="pt-8">
+      <span class="block text-sm md:text-base font-bold text-brand-700"
+        >{item.title}</span
+      >
+      {
+        item.subtitle && (
+          <span class="block text-xs md:body-sm text-gray-700">
+            {item.subtitle}
+          </span>
+        )
+      }
+    </div>
+  </div>
+  <SvgIcon
+    name="quote"
+    size="w-24 h-24 lg:w-44 lg:h-44"
+    className="absolute bottom-8 lg:bottom-16 right-8 lg:right-16 -z-[1] opacity-50 text-brand-200"
+  />
+</div>

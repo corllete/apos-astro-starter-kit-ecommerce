@@ -1,0 +1,90 @@
+---
+import Button from "@components/Button.astro";
+import apos from "@utils/apos";
+import { formatPrice } from "@utils/theme.js";
+
+interface Props {
+  product: {
+    title: string;
+    price: number;
+    pricePromo?: number;
+    buyNowUrl?: string;
+    _url: string;
+    image?: object;
+    _image?: object;
+  };
+  // Indicates if the product should span two columns on larger screens
+  wide?: boolean;
+}
+
+const { __t } = apos;
+const { product, wide } = Astro.props;
+
+const priceFormat = product.pricePromo
+  ? " text-lg font-bold text-gray-400 line-through"
+  : " text-xl font-bold text-brand";
+const attachment = apos.image.first(product.image ?? product._image ?? {});
+const span = wide ? " xl:col-span-2" : "";
+---
+
+<div
+  class={`relative flex flex-col w-full bg-white border border-gray rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-brand focus-within:ring-offset-2 focus-within:ring-offset-white${span}`}
+>
+  <img
+    class="w-full h-[332px] object-cover"
+    src={apos.attachment.url(attachment, { size: "full" })}
+    alt={attachment._alt}
+    width={apos.attachment.getWidth(attachment)}
+    height={apos.attachment.getHeight(attachment)}
+    srcset={attachment.srcset ?? apos.image.srcset(attachment)}
+    style={apos.attachment.hasFocalPoint(attachment)
+      ? `object-position: ${apos.attachment.focalPointToObjectPosition(attachment)};`
+      : undefined}
+    sizes="(max-width: 600px) 569px, 759px"
+  />
+
+  <h6
+    class="px-4 text-gray-800 line-clamp-3 md:line-clamp-2 font-medium text-center xs:text-left mt-6"
+  >
+    {product.title}
+  </h6>
+  <div class="px-4 py-6 flex flex-col grow">
+    <div
+      class="flex flex-col grow gap-y-6 xs:flex-row gap-x-4 lg:flex-wrap lg:content-end overflow-hidden justify-between item-center xs:items-end"
+    >
+      <div
+        class="flex flex-col items-center xs:flex-row gap-2 xs:items-baseline"
+      >
+        {
+          product.pricePromo && (
+            <span class="text-xl font-bold text-brand">
+              {__t("currency", {
+                value: formatPrice(product.pricePromo),
+              })}
+            </span>
+          )
+        }
+        <span class={priceFormat}
+          >{
+            __t("currency", {
+              value: formatPrice(product.price),
+            })
+          }</span
+        >
+      </div>
+      {
+        product.buyNowUrl && (
+          <Button href={product.buyNowUrl} className="z-[1]">
+            {__t("product:buyNow")}
+          </Button>
+        )
+      }
+    </div>
+  </div>
+
+  <a
+    title={product.title}
+    href={product._url}
+    aria-label={`Product Card: ${product.title}`}
+    class="absolute inset-0 focus:outline-none"></a>
+</div>

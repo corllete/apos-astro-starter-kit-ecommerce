@@ -1,0 +1,58 @@
+---
+import SvgIcon from "./SvgIcon.astro";
+interface Props {
+  icon: string;
+  size?: string;
+  id?: string;
+  onDark?: boolean;
+  href?: string;
+  label?: string;
+  className?: string;
+}
+
+const { icon, size, onDark, href, label, className, id, ...attrs } =
+  Astro.props;
+let state = ` text-brand 
+        hover:text-brand-700
+        active:text-brand-700
+        disabled:text-gray-400
+        transition-color
+        duration-150`;
+if (onDark) {
+  state = `text-white 
+        hover:text-brand-100
+        active:text-brand-100
+        disabled:text-gray-400
+        transition-color
+        duration-150`;
+}
+---
+
+{
+  href ? (
+    <a
+      {id}
+      href={href}
+      title={label}
+      class:list={["inline-block p-2 text-center rounded-md", state, className]}
+      {...attrs}
+    >
+      <span class="sr-only">
+        <slot>{label}</slot>
+      </span>
+      <SvgIcon name={icon} {size} />
+    </a>
+  ) : (
+    <button
+      {id}
+      title={label}
+      class:list={["inline-block p-2 text-center rounded-md", state, className]}
+      {...attrs}
+    >
+      <span class="sr-only">
+        <slot>{label}</slot>
+      </span>
+      <SvgIcon name={icon} {size} />
+    </button>
+  )
+}

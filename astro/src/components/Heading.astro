@@ -1,0 +1,25 @@
+---
+interface Props {
+  title: string;
+  tagline?: string;
+  section?: boolean;
+}
+const { title, tagline, section } = Astro.props;
+
+const TagName = !section ? "h1" : "h2";
+const css = "mb-6 md:max-w-3xl mx-auto font-extrabold text-gray-800";
+const vspaceTop = !section ? " mt-16" : "";
+const defCls = !section ? " text-5xl md:text-6xl" : " text-4xl md:text-5xl";
+---
+
+<div class:list={["text-center", vspaceTop]}>
+  <TagName class:list={[css, defCls]}>{title}</TagName>
+  <hr class="mx-auto h-[3px] w-52 bg-brand" />
+  {
+    tagline && (
+      <p class="t-subtitle md:max-w-3xl mt-6 mx-auto text-center text-gray-600">
+        {tagline}
+      </p>
+    )
+  }
+</div>

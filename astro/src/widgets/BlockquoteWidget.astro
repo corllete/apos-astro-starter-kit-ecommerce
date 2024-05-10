@@ -1,0 +1,16 @@
+---
+import AposArea from "@apostrophecms/apostrophe-astro/components/AposArea.astro";
+import Blockquote from "@components/Blockquote.astro";
+const { widget, apos } = Astro.props;
+---
+
+<section class="py-8 md:py-16">
+  {
+    widget.sectionTitle && (
+      <h3 class="mx-auto mb-12 max-w-3xl text-center">{widget.sectionTitle}</h3>
+    )
+  }
+  <Blockquote item={widget}>
+    <AposArea area={widget.content} />
+  </Blockquote>
+</section>

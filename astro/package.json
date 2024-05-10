@@ -1,0 +1,43 @@
+{
+  "name": "astro-frontend",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "APOS_EXTERNAL_FRONT_KEY=dev astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "serve": "node ./dist/server/entry.mjs",
+    "preview": "astro preview",
+    "astro": "astro",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "@apostrophecms/apostrophe-astro": "^1.0.0",
+    "@astrojs/node": "^7.0.1",
+    "@astrojs/tailwind": "^5.1.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "astro": "^4.0.0",
+    "astro-i18next": "^1.0.0-beta.21",
+    "dayjs": "^1.11.10",
+    "i18next": "^22.4.10",
+    "lodash": "^4.17.21",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.7"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.6.10",
+    "@storybook/addon-interactions": "^7.6.10",
+    "@storybook/addon-links": "^7.6.10",
+    "@storybook/blocks": "^7.6.10",
+    "@storybook/test": "^7.6.10",
+    "@storybook/vue3": "^7.6.10",
+    "@storybook/vue3-vite": "^7.6.10",
+    "prettier": "^3.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.6.10"
+  }
+}

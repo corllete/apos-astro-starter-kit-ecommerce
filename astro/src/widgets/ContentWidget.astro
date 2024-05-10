@@ -1,0 +1,8 @@
+---
+import AposArea from "@apostrophecms/apostrophe-astro/components/AposArea.astro";
+const { widget } = Astro.props;
+---
+
+<section class="md:mx-auto py-3 md:py-6 max-w-3xl">
+  <AposArea area={widget.content} />
+</section>

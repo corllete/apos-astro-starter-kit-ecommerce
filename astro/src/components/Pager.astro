@@ -1,0 +1,49 @@
+---
+import setParameter from "@apostrophecms/apostrophe-astro/lib/aposSetQueryParameter.js";
+interface Props {
+  total: number;
+  current: number;
+}
+const { total, current } = Astro.props;
+const pages = [];
+for (let i = 1; i <= total; i++) {
+  pages.push({
+    number: i,
+    current: i === current,
+    url: setParameter(Astro.url, "page", i),
+  });
+}
+---
+
+{
+  total > 1 && (
+    <div class="app-pager">
+      {pages.map((page) => {
+        const css = ["app-pager__item"];
+        if (page.current) {
+          css.push("is-active");
+        }
+        if (page.number === 1) {
+          css.push("is-first");
+        }
+        if (page.number === total) {
+          css.push("is-last");
+        }
+        return (
+          <span class:list={css}>
+            {page.current ? (
+              <Fragment>{page.number}</Fragment>
+            ) : (
+              <a
+                class={page.current ? "current" : ""}
+                href={!page.current && page.url}
+              >
+                {page.number}
+              </a>
+            )}
+          </span>
+        );
+      })}
+    </div>
+  )
+}

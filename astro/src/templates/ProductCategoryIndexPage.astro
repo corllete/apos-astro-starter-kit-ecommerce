@@ -1,0 +1,21 @@
+---
+import AppContainer from "@layouts/AppContainer.astro";
+import Heading from "@components/Heading.astro";
+import Pager from "@components/Pager.astro";
+import { maybeFilterEmptyCategories } from "@utils/theme";
+import CategoryList from "@components/CategoryList.astro";
+
+const { page, pieces, global, currentPage, totalPages, __t } =
+  Astro.props.aposData;
+const cats = maybeFilterEmptyCategories(pieces, global);
+---
+
+<AppContainer>
+  <Heading title={page.title} tagline={page.tagline} />
+
+  <section class="py-8 md:py-16">
+    {!cats.length ? <p class="text-center">{__t("noResults")}</p> : ""}
+    <CategoryList items={cats} />
+    <Pager total={totalPages} current={currentPage} />
+  </section>
+</AppContainer>

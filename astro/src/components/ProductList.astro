@@ -1,0 +1,13 @@
+---
+import ProductCard from "./ProductCard.astro";
+const { items, condensed } = Astro.props;
+const cols = condensed ? " xl:grid-cols-4" : " xl:grid-cols-3";
+---
+
+<div class:list={["grid gap-8 grid-cols-1 md:grid-cols-2", cols]}>
+  {
+    items.map((item) => {
+      return <ProductCard product={item} />;
+    })
+  }
+</div>

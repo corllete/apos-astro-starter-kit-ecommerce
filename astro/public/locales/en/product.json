@@ -1,0 +1,7 @@
+{
+  "availableCount_one": "{{ count }} Product Available",
+  "availableCount_other": "{{ count }} Products Available",
+  "cardAria": "See more about {{ value }}",
+  "noResults": "No products match the current filter criteria.",
+  "buyNow": "Buy Now"
+}

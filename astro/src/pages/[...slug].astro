@@ -1,0 +1,53 @@
+---
+import "../style/fonts.css";
+import "../style/main.css";
+import aposPageFetch from "@apostrophecms/apostrophe-astro/lib/aposPageFetch.js";
+import AposLayout from "@apostrophecms/apostrophe-astro/components/layouts/AposLayout.astro";
+import AposTemplate from "@apostrophecms/apostrophe-astro/components/AposTemplate.astro";
+import { setRequestConfig } from "@utils/apos.js";
+import AppHeader from "@components/AppHeader.astro";
+import SvgSprite from "@components/SvgSprite.astro";
+import AppFooter from "@components/AppFooter.astro";
+
+const aposData = await aposPageFetch(Astro.request);
+const bodyClass = `myclass`;
+
+if (aposData.redirect) {
+  return Astro.redirect(aposData.url, aposData.status);
+}
+if (aposData.notFound) {
+  Astro.response.status = 404;
+}
+setRequestConfig(aposData);
+---
+
+<AposLayout title={aposData.page?.title} {aposData} {bodyClass}>
+  <Fragment slot="standardHead">
+    <meta name="description" content={aposData.page?.seoDescription} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+  </Fragment>
+  <Fragment slot="extraHead">
+    <link rel="icon" href={aposData.global?.favicon?._url} />
+  </Fragment>
+  <Fragment slot="main">
+    <div class="app">
+      <AppHeader
+        config={aposData.global || {}}
+        currentUrl={aposData.url}
+        homeUrl={aposData.home?._url}
+      />
+      <main>
+        <AposTemplate {aposData} slot="main" />
+      </main>
+      <AppFooter
+        config={aposData.global || {}}
+        currentUrl={aposData.url}
+        homeUrl={aposData.home?._url}
+      />
+    </div>
+  </Fragment>
+  <Fragment slot="endBody">
+    <SvgSprite />
+  </Fragment>
+</AposLayout>

@@ -1,0 +1,21 @@
+---
+import apos from "@utils/apos";
+
+const { attachment, className, alt } = Astro.props;
+let width = 189;
+let height = 40;
+let url = apos.asset.url("/modules/theme/logo.svg");
+if (attachment) {
+  width = apos.attachment.getWidth(attachment);
+  height = apos.attachment.getHeight(attachment);
+  url = apos.attachment.url(attachment, { size: "one-third" });
+}
+---
+
+<img
+  class:list={["h-full w-full object-contain", className]}
+  width={width}
+  height={height}
+  src={url}
+  alt={alt || attachment._alt}
+/>

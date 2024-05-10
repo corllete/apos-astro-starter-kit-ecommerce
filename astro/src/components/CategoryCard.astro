@@ -1,0 +1,55 @@
+---
+import apos from "@utils/apos";
+
+const { __t } = apos;
+const { category } = Astro.props;
+
+const availability =
+  category._productCount && category._productCount > 0
+    ? __t("product:availableCount", { count: category._productCount })
+    : "";
+
+const attachment =
+  apos.image.first(category.image || category._image || {}) || {};
+const imageStyle = apos.attachment.hasFocalPoint(attachment)
+  ? `object-position: ${apos.attachment.focalPointToObjectPosition(attachment)}`
+  : "";
+---
+
+<div
+  class="relative flex flex-col w-full bg-white rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-brand focus-within:ring-offset-2 focus-within:ring-offset-white"
+>
+  {/* Image */}
+  {/* attachment.srcset for the design system mocks and testing */}
+  <img
+    class="w-full h-80 object-cover rounded-md"
+    src={apos.attachment.url(attachment, { size: "full" })}
+    alt={attachment._alt}
+    srcset={attachment.srcset || apos.image.srcset(attachment)}
+    width={apos.attachment.getWidth(attachment)}
+    height={apos.attachment.getHeight(attachment)}
+    style={imageStyle}
+    sizes="(max-width: 600px) 569px, 759px"
+  />
+
+  {/* Content container */}
+  <div class="flex flex-col flex-grow">
+    <h5 class="text-gray-800 line-clamp-3 md:line-clamp-2 text-center mt-5">
+      {category.title}
+    </h5>
+    {
+      availability && (
+        <p class="text-gray-600 text-center mt-1">{availability}</p>
+      )
+    }
+  </div>
+
+  {/* Link cover */}
+  <a
+    title={category.title}
+    href={category._url}
+    aria-label={__t("product:cardAria", { value: category.title })}
+    class="absolute inset-0 focus:outline-none"
+  >
+  </a>
+</div>

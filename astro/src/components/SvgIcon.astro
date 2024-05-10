@@ -1,0 +1,45 @@
+---
+interface Props {
+  name: string;
+  id?: string;
+  size?: string;
+  className?: string;
+  onClick?: string | ((event: MouseEvent) => void);
+}
+const { name, size, className, id, ...attributes } = Astro.props;
+const svgId = "#theme-svg-icon-" + name;
+let sizeCls = "";
+
+switch (size) {
+  // 16px
+  case "sm":
+    sizeCls = "w-4 h-4";
+    break;
+  // 24px
+  case "md":
+    sizeCls = "w-6 h-6";
+    break;
+  // 32px
+  case "lg":
+    sizeCls = "w-8 h-8";
+    break;
+  // 40px
+  case "xl":
+    sizeCls = "w-10 h-10";
+    break;
+  // custom size TW class or 24px
+  default:
+    sizeCls = size ? size : "w-6 h-6";
+}
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  class:list={[sizeCls, className]}
+  aria-hidden="true"
+  focusable="false"
+  {id}
+  {...attributes}
+>
+  <use xlink:href={svgId}></use>
+</svg>

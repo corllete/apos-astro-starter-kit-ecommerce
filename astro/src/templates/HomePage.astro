@@ -1,0 +1,12 @@
+---
+import AposArea from "@apostrophecms/apostrophe-astro/components/AposArea.astro";
+import AppContainer from "@layouts/AppContainer.astro";
+const { page } = Astro.props.aposData;
+const { main, heading } = page;
+---
+
+<AppContainer>
+  <AposArea area={heading} />
+
+  <AposArea area={main} />
+</AppContainer>

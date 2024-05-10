@@ -1,0 +1,23 @@
+---
+import AposArea from "@apostrophecms/apostrophe-astro/components/AposArea.astro";
+import Heading from "@components/Heading.astro";
+import Pager from "@components/Pager.astro";
+import ProductList from "@components/ProductList.astro";
+import AppContainer from "@layouts/AppContainer.astro";
+
+const { page, piece, pieces, currentPage, totalPages, user, query } =
+  Astro.props.aposData;
+const { main, heading } = piece;
+---
+
+<AppContainer>
+  {
+    piece.headerType === "widget" ? (
+      <AposArea area={heading} />
+    ) : (
+      <Heading title={page.title} tagline={page.tagline} />
+    )
+  }
+  <ProductList items={pieces} />
+  <Pager total={totalPages} current={currentPage} />
+</AppContainer>

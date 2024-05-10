@@ -1,0 +1,29 @@
+---
+import AposArea from "@apostrophecms/apostrophe-astro/components/AposArea.astro";
+import ProductList from "@components/ProductList.astro";
+import AppContainer from "@layouts/AppContainer.astro";
+import Heading from "@components/Heading.astro";
+import Pager from "@components/Pager.astro";
+import apos from "@utils/apos";
+
+const { __t } = apos;
+
+const { page, pieces, currentPage, totalPages } = Astro.props.aposData;
+---
+
+<AppContainer>
+  <Heading title={page.title} tagline={page.tagline} />
+
+  <section class="py-8 md:py-16">
+    {
+      !pieces.length ? (
+        <p class="text-center">{__t("product:noResults")}</p>
+      ) : (
+        ""
+      )
+    }
+    <ProductList items={pieces} />
+    <Pager total={totalPages} current={currentPage} />
+  </section>
+  <AposArea area={page.main} />
+</AppContainer>
